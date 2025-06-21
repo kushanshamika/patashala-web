@@ -11,8 +11,9 @@ interface Post {
   pdfs: string[];
 }
 
-export default async function PostViewPage({ params }: { params: { id: string } }) {
-  const docRef = doc(db, 'posts', params.id);
+export default async function PostViewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const docRef = doc(db, 'posts', id);
   const docSnap = await getDoc(docRef);
 
   if (!docSnap.exists()) return notFound();
